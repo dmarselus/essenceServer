@@ -1,5 +1,26 @@
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
+//ROUTES
+app.get('/', (req, res) => {
+	res.send('we are home');
+});
+
+app.get('/posts', (req, res) => {
+	res.send('we are on posts');
+});
+
+//connect to db
+mongoose.connect(
+	'mongodb+srv://admin:admin@cluster0-8d3rr.mongodb.net/test?retryWrites=true&w=majority',
+	{ useNewUrlParser: true },
+	() => {
+		console.log('connected on mongoose');
+	}
+);
+
+//start listening
+app.listen(3000);
 
 app.use((req, res, next) => {
 	res.status(200).json({
