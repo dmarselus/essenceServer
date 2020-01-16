@@ -22,7 +22,7 @@ mongoose.connect(
 );
 
 //start listening
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
 
 app.use((req, res, next) => {
 	res.status(200).json({
