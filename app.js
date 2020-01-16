@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
+require('dotenv/config')
 //ROUTES
 app.get('/', (req, res) => {
 	res.send('we are home');
@@ -13,6 +14,7 @@ app.get('/posts', (req, res) => {
 //connect to db
 mongoose.connect(
 	'mongodb+srv://admin:admin@cluster0-8d3rr.mongodb.net/test?retryWrites=true&w=majority',
+	// process.env.DB_CONNECTION,
 	{ useNewUrlParser: true },
 	() => {
 		console.log('connected on mongoose');
