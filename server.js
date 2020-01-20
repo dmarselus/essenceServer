@@ -1,32 +1,42 @@
-const http = require('http');
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-const hostname = '127.0.0.1';
-const port = 3000;
-const url = 'mongodb+srv://admin:admin@cluster0-8d3rr.mongodb.net/test?retryWrites=true&w=majority';
+const express = require('express');
+const app = express();
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
-// Database Name
-const dbName = 'essence';
+require('dotenv/config');
 
-// Use connect method to connect to the server
-// MongoClient.connect(url, function(err, client) {
-// 	assert.equal(null, err);
-// 	console.log('Connected successfully to server');
-// 	let arr = [];
-// 	const db = client.db(dbName);
-// 	const test = db.collection('users').find();
-// 	test.forEach(function(item, err) {
-// 		console.log(item);
-// 	});
-// 	client.close();
-// });
+app.use(bodyParser.json());
+//import Routes
+const postsRoute = require('./routes/posts');
 
-const server = http.createServer((req, res) => {
-	res.statusCode = 200;
-	res.setHeader('Content-Type', 'text/plain');
-	res.end('Hello World');
+app.use('/posts', postsRoute);
+
+//ROUTES
+app.get('/', (req, res) => {
+	res.send('we are home');
 });
 
-server.listen(process.env.PORT || port, hostname, () => {
-	console.log(`Server running at http://${hostname}:${port}/`);
+app.get('/posts', (req, res) => {
+	res.send('we are on posts');
 });
+
+//connect to db
+mongoose.connect(
+	'mongodb+srv://admin:admin@cluster0-8d3rr.mongodb.net/essence?retryWrites=true&w=majority',
+	// process.env.DB_CONNECTION,
+	{ useNewUrlParser: true },
+	() => {
+		console.log('connected on mongoose');
+	}
+);
+
+//start listening
+app.listen(process.env.PORT || 3000);
+
+app.use((req, res, next) => {
+	res.status(200).json({
+		message: 'it works'
+	});
+});
+
+module.exports = app;
