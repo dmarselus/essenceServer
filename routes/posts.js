@@ -4,7 +4,7 @@ const userSchema = require('../models/userSchema');
 
 router.get('/', async (req, res) => {
 	try {
-		const users = await Post.find();
+		const users = await userSchema.find();
 		res.json(users);
 	} catch (err) {
 		res.json({ message: err });
