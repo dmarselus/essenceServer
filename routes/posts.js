@@ -2,8 +2,13 @@ const express = require('express');
 const router = express.Router();
 const userSchema = require('../models/userSchema');
 
-router.get('/', (req, res) => {
-	res.send('we are on posts');
+router.get('/', async (req, res) => {
+	try {
+		const users = await Post.find();
+		res.json(users);
+	} catch (err) {
+		res.json({ message: err });
+	}
 });
 
 router.post('/', (req, res) => {
